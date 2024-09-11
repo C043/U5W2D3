@@ -15,29 +15,29 @@ public class AuthorsController {
     private AuthorsService authorsService;
 
     @GetMapping
-    public List<Author> getAuthors(){
-        return authorsService.getAuthorList();
+    public List<Author> getAuthors() {
+        return authorsService.findAllAuthors();
     }
 
     @GetMapping("/{authorId}")
-    public Author getAuthorById(@PathVariable int authorId){
+    public Author getAuthorById(@PathVariable int authorId) {
         return authorsService.findAuthorById(authorId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Author saveAuthor(@RequestBody Author body){
+    public Author saveAuthor(@RequestBody Author body) {
         return authorsService.saveAuthor(body);
     }
 
     @PutMapping("/{authorId}")
-    public Author putAuthor(@PathVariable int authorId, @RequestBody Author body){
+    public Author putAuthor(@PathVariable int authorId, @RequestBody Author body) {
         return authorsService.updateAuthor(authorId, body);
     }
 
     @DeleteMapping("/{authorId}")
-    public String deleteAuthor(@PathVariable int authorId){
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAuthor(@PathVariable int authorId) {
         authorsService.deleteAuthor(authorId);
-        return "Autore eliminato con successo.";
     }
 }

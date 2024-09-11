@@ -1,32 +1,35 @@
 package fragnito.U5W2D3.services;
 
 import fragnito.U5W2D3.entities.Author;
+import fragnito.U5W2D3.exceptions.BadRequestException;
+import fragnito.U5W2D3.exceptions.NotFoundException;
+import fragnito.U5W2D3.repositories.AuthorsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Service
 public class AuthorsService {
-    private final List<Author> authorList = new ArrayList<>();
+    @Autowired
+    private AuthorsRepository authorsRepository;
 
-    public List<Author> getAuthorList(){
-        return this.authorList;
+    public List<Author> findAllAuthors() {
+        return this.authorsRepository.findAll();
     }
 
-    public Author findAuthorById(int authorId){
-        return authorList.stream().filter(author -> author.getId() == authorId).findFirst().orElseThrow();
+    public Author findAuthorById(int authorId) {
+        return this.authorsRepository.findAll().stream().filter(author -> author.getId() == authorId).findFirst().orElseThrow(() -> new NotFoundException(authorId));
     }
 
-    public Author saveAuthor(Author body){
-        Random rand = new Random();
+    public Author saveAuthor(Author body) {
+        if (this.authorsRepository.existsByEmail(body.getEmail())) throw new BadRequestException("Email già in uso.");
         body.setAvatar("https://ui-avatars.com/api/?name=" + body.getNome() + "+" + body.getCognome());
-        authorList.add(body);
+        this.authorsRepository.save(body);
         return body;
     }
 
-    public Author updateAuthor(int authorId, Author updatedAuthor){
+    public Author updateAuthor(int authorId, Author updatedAuthor) {
         Author found = this.findAuthorById(authorId);
         found.setAvatar("https://ui-avatars.com/api/?name=" + updatedAuthor.getNome() + "+" + updatedAuthor.getCognome());
         found.setNome(updatedAuthor.getNome());
@@ -36,7 +39,7 @@ public class AuthorsService {
         return found;
     }
 
-    public void deleteAuthor(int authorId){
-        this.authorList.remove(this.findAuthorById(authorId));
+    public void deleteAuthor(int authorId) {
+        this.authorsRepository.delete(this.findAuthorById(authorId));
     }
 }
