@@ -21,7 +21,6 @@ public class AuthorsService {
 
     public Author saveAuthor(Author body){
         Random rand = new Random();
-        body.setId(rand.nextInt(1, 1000));
         body.setAvatar("https://ui-avatars.com/api/?name=" + body.getNome() + "+" + body.getCognome());
         authorList.add(body);
         return body;

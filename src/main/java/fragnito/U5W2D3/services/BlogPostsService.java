@@ -21,7 +21,6 @@ public class BlogPostsService {
 
     public BlogPost saveBlogPost(BlogPost body){
         Random rand = new Random();
-        body.setId(rand.nextInt(1, 1000));
         body.setCover("https://picsum.photos/200/300");
         body.setTempoDiLettura(rand.nextInt(3, 10));
         this.blogPostList.add(body);
