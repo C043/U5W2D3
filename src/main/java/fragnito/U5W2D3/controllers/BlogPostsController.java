@@ -1,6 +1,7 @@
 package fragnito.U5W2D3.controllers;
 
 import fragnito.U5W2D3.entities.BlogPost;
+import fragnito.U5W2D3.payloads.BlogPostPayload;
 import fragnito.U5W2D3.services.BlogPostsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,29 +16,29 @@ public class BlogPostsController {
     private BlogPostsService blogPostsService;
 
     @GetMapping
-    public List<BlogPost> getBlogPosts(){
+    public List<BlogPost> getBlogPosts() {
         return blogPostsService.findBlogPosts();
     }
 
     @GetMapping("/{postId}")
-    public BlogPost getBlogPostById(@PathVariable int postId){
+    public BlogPost getBlogPostById(@PathVariable int postId) {
         return blogPostsService.getBlogPostById(postId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BlogPost postBlogPost(@RequestBody BlogPost body){
+    public BlogPost postBlogPost(@RequestBody BlogPostPayload body) {
         return blogPostsService.saveBlogPost(body);
     }
 
     @PutMapping("/{postId}")
-    public BlogPost putBlogPost(@PathVariable int postId, @RequestBody BlogPost body){
+    public BlogPost putBlogPost(@PathVariable int postId, @RequestBody BlogPost body) {
         return blogPostsService.updateBlogPost(postId, body);
     }
 
     @DeleteMapping("/{postId}")
-    public String deleteBlogPost(@PathVariable int postId){
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteBlogPost(@PathVariable int postId) {
         blogPostsService.deleteBlogPost(postId);
-        return "Post eliminato con successo.";
     }
 }
