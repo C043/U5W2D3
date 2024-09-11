@@ -6,9 +6,12 @@ import fragnito.U5W2D3.exceptions.NotFoundException;
 import fragnito.U5W2D3.payloads.BlogPostPayload;
 import fragnito.U5W2D3.repositories.BlogPostsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class BlogPostsService {
@@ -18,8 +21,9 @@ public class BlogPostsService {
     @Autowired
     private AuthorsService authorsService;
 
-    public List<BlogPost> findBlogPosts() {
-        return this.blogPostsRepository.findAll();
+    public Page<BlogPost> findBlogPosts(int page, int size, String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return this.blogPostsRepository.findAll(pageable);
     }
 
     public BlogPost getBlogPostById(int postId) {

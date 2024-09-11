@@ -4,10 +4,9 @@ import fragnito.U5W2D3.entities.BlogPost;
 import fragnito.U5W2D3.payloads.BlogPostPayload;
 import fragnito.U5W2D3.services.BlogPostsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/blogPosts")
@@ -16,8 +15,10 @@ public class BlogPostsController {
     private BlogPostsService blogPostsService;
 
     @GetMapping
-    public List<BlogPost> getBlogPosts() {
-        return blogPostsService.findBlogPosts();
+    public Page<BlogPost> getBlogPosts(@RequestParam(defaultValue = "0") int page,
+                                       @RequestParam(defaultValue = "5") int size,
+                                       @RequestParam(defaultValue = "titolo") String sortBy) {
+        return blogPostsService.findBlogPosts(page, size, sortBy);
     }
 
     @GetMapping("/{postId}")

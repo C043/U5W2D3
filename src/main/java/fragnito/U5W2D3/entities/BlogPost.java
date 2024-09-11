@@ -1,7 +1,10 @@
 package fragnito.U5W2D3.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -17,7 +20,6 @@ public class BlogPost {
     private String categoria;
     @Column(nullable = false)
     private String titolo;
-    @Column(nullable = false)
     private String cover;
     @Column(nullable = false)
     private String contenuto;
